@@ -9,6 +9,8 @@ namespace KutuphaneYonetimSistemi.Controllers
     public class PanelimController : Controller
     {
         // GET: Panelim
+
+        [Authorize]
         public ActionResult Index()
         {
             return View();
