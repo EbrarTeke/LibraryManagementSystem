@@ -12,6 +12,8 @@ namespace KutuphaneYonetimSistemi.Controllers
     {
         // GET: Login
         DBKUTUPHANEEntities db = new DBKUTUPHANEEntities();
+
+        [HttpGet]
         public ActionResult GirisYap()
         {
             return View();
@@ -24,11 +26,13 @@ namespace KutuphaneYonetimSistemi.Controllers
             if(bilgiler != null)
             {
                 FormsAuthentication.SetAuthCookie(bilgiler.MAIL, false);
-                Session["ad"] = bilgiler.AD.ToString();
-                Session["soyad"] = bilgiler.SOYAD.ToString();
-                Session["kullanıcıadı"] = bilgiler.KULLANICIADI.ToString();
-                Session["sifre"] = bilgiler.SIFRE.ToString();
-                Session["okul"] = bilgiler.OKUL.ToString();
+                Session["mail"] = bilgiler.MAIL.ToString();
+                //TempData["id"] = bilgiler.ID.ToString();
+                //TempData["ad"] = bilgiler.AD.ToString();
+                //TempData["soyad"] = bilgiler.SOYAD.ToString();
+                //TempData["kullanıcıadı"] = bilgiler.KULLANICIADI.ToString();
+                //TempData["sifre"] = bilgiler.SIFRE.ToString();
+                //TempData["okul"] = bilgiler.OKUL.ToString();
                 return RedirectToAction("Index", "Panelim");
             }
             else
