@@ -1,0 +1,42 @@
+﻿
+@model KutuphaneYonetimSistemi.Models.Entity.TBLAction
+@{
+    ViewBag.Title = "Lending";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h2>Lending</h2>
+
+
+@using (Html.BeginForm("UpdateLending", "Borrow", FormMethod.Post))
+{
+    <div style="margin-bottom:15px"></div>
+    <div class="form-group">
+        <label> ActionID</label>
+        @Html.TextBoxFor(c => c.ActionID, new { @class = "form-control" })
+
+        <br />
+        <label> bookName</label>
+        
+        @Html.TextBoxFor(c => c.TBLBook.bookName, new { @class = "form-control" })
+        <br />
+
+        <label> UserName</label>
+        @Html.TextBoxFor(c => c.TBLUser.UserName, new { @class = "form-control" })
+
+        <br />
+        <label> ActionBeginningDate</label>
+        @Html.TextBoxFor(c => c.ActionBeginningDate, "{0:dd.MM.yyyy}", new { @class = "form-control" })
+        <br />
+        <br />
+        <label> ActionFinishDate</label>
+        @Html.TextBoxFor(c => c.ActionFinishDate, "{0:dd.MM.yyyy}", new { @class = "form-control" })
+        <br />
+
+        <input type="text" class="form-control" name="userLendingTime" value="@DateTime.Now.ToShortDateString()" />
+    </div>
+    <div>
+
+        <button class="btn btn-warning"> Lending</button>
+    </div>
+}

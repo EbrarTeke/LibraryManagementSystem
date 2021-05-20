@@ -30,6 +30,8 @@ namespace KutuphaneYonetimSistemi.Models.Entity
         public string FOTOGRAF { get; set; }
         public string TELEFON { get; set; }
         public string OKUL { get; set; }
+        public Nullable<int> LIBRARYID { get; set; }
+        public string DETAY { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TBLCEZALAR> TBLCEZALAR { get; set; }

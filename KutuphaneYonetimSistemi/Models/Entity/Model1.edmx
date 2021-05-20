@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DBKUTUPHANEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Libraries">
+          <Key>
+            <PropertyRef Name="LibrariesID" />
+          </Key>
+          <Property Name="LibrariesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibraryName" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -14,6 +21,20 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TBLAction">
+          <Key>
+            <PropertyRef Name="ActionID" />
+          </Key>
+          <Property Name="ActionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActionBook" Type="int" />
+          <Property Name="ActionUser" Type="int" />
+          <Property Name="ActionWorker" Type="int" />
+          <Property Name="ActionBeginningDate" Type="smalldatetime" />
+          <Property Name="ActionFinishDate" Type="smalldatetime" />
+          <Property Name="LibraryID" Type="int" />
+          <Property Name="ActionCase" Type="bit" />
+          <Property Name="userLendingTime" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="TBLCEZALAR">
           <Key>
@@ -96,6 +117,8 @@
           <Property Name="FOTOGRAF" Type="varchar" MaxLength="250" />
           <Property Name="TELEFON" Type="varchar" MaxLength="20" />
           <Property Name="OKUL" Type="varchar" MaxLength="100" />
+          <Property Name="LIBRARYID" Type="int" />
+          <Property Name="DETAY" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TBLYAZAR">
           <Key>
@@ -179,7 +202,9 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DBKUTUPHANEModelStoreContainer">
+          <EntitySet Name="Libraries" EntityType="Self.Libraries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLAction" EntityType="Self.TBLAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLCEZALAR" EntityType="Self.TBLCEZALAR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLHAREKET" EntityType="Self.TBLHAREKET" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TBLKASA" EntityType="Self.TBLKASA" Schema="dbo" store:Type="Tables" />
@@ -309,6 +334,8 @@
           <Property Name="OKUL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TBLCEZALAR" Relationship="Self.FK_TBLCEZALAR_TBLUYELER" FromRole="TBLUYELER" ToRole="TBLCEZALAR" />
           <NavigationProperty Name="TBLHAREKET" Relationship="Self.FK_TBLHAREKET_TBLUYELER" FromRole="TBLUYELER" ToRole="TBLHAREKET" />
+          <Property Name="LIBRARYID" Type="Int32" />
+          <Property Name="DETAY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TBLYAZAR">
           <Key>
@@ -427,6 +454,8 @@
             <End Role="TBLKITAP" EntitySet="TBLKITAP" />
           </AssociationSet>
           <EntitySet Name="TBLMESAJLAR" EntityType="DBKUTUPHANEModel.TBLMESAJLAR" />
+          <EntitySet Name="Libraries" EntityType="DBKUTUPHANEModel.Libraries" />
+          <EntitySet Name="TBLAction" EntityType="DBKUTUPHANEModel.TBLAction" />
         </EntityContainer>
         <EntityType Name="TBLMESAJLAR">
           <Key>
@@ -438,6 +467,27 @@
           <Property Name="KONU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ICERIK" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="TARIH" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Libraries">
+          <Key>
+            <PropertyRef Name="LibrariesID" />
+          </Key>
+          <Property Name="LibrariesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibraryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TBLAction">
+          <Key>
+            <PropertyRef Name="ActionID" />
+          </Key>
+          <Property Name="ActionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActionBook" Type="Int32" />
+          <Property Name="ActionUser" Type="Int32" />
+          <Property Name="ActionWorker" Type="Int32" />
+          <Property Name="ActionBeginningDate" Type="DateTime" Precision="0" />
+          <Property Name="ActionFinishDate" Type="DateTime" Precision="0" />
+          <Property Name="LibraryID" Type="Int32" />
+          <Property Name="ActionCase" Type="Boolean" />
+          <Property Name="userLendingTime" Type="DateTime" Precision="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -522,6 +572,8 @@
           <EntitySetMapping Name="TBLUYELER">
             <EntityTypeMapping TypeName="DBKUTUPHANEModel.TBLUYELER">
               <MappingFragment StoreEntitySet="TBLUYELER">
+                <ScalarProperty Name="DETAY" ColumnName="DETAY" />
+                <ScalarProperty Name="LIBRARYID" ColumnName="LIBRARYID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="AD" ColumnName="AD" />
                 <ScalarProperty Name="SOYAD" ColumnName="SOYAD" />
@@ -553,6 +605,29 @@
                 <ScalarProperty Name="ALICI" ColumnName="ALICI" />
                 <ScalarProperty Name="GONDEREN" ColumnName="GONDEREN" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libraries">
+            <EntityTypeMapping TypeName="DBKUTUPHANEModel.Libraries">
+              <MappingFragment StoreEntitySet="Libraries">
+                <ScalarProperty Name="LibraryName" ColumnName="LibraryName" />
+                <ScalarProperty Name="LibrariesID" ColumnName="LibrariesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLAction">
+            <EntityTypeMapping TypeName="DBKUTUPHANEModel.TBLAction">
+              <MappingFragment StoreEntitySet="TBLAction">
+                <ScalarProperty Name="userLendingTime" ColumnName="userLendingTime" />
+                <ScalarProperty Name="ActionCase" ColumnName="ActionCase" />
+                <ScalarProperty Name="LibraryID" ColumnName="LibraryID" />
+                <ScalarProperty Name="ActionFinishDate" ColumnName="ActionFinishDate" />
+                <ScalarProperty Name="ActionBeginningDate" ColumnName="ActionBeginningDate" />
+                <ScalarProperty Name="ActionWorker" ColumnName="ActionWorker" />
+                <ScalarProperty Name="ActionUser" ColumnName="ActionUser" />
+                <ScalarProperty Name="ActionBook" ColumnName="ActionBook" />
+                <ScalarProperty Name="ActionID" ColumnName="ActionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

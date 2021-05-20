@@ -35,5 +35,7 @@ namespace KutuphaneYonetimSistemi.Models.Entity
         public virtual DbSet<TBLUYELER> TBLUYELER { get; set; }
         public virtual DbSet<TBLYAZAR> TBLYAZAR { get; set; }
         public virtual DbSet<TBLMESAJLAR> TBLMESAJLAR { get; set; }
+        public virtual DbSet<Libraries> Libraries { get; set; }
+        public virtual DbSet<TBLAction> TBLAction { get; set; }
     }
 }
